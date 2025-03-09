@@ -67,10 +67,17 @@ Interactive R session:
 library(RCurl)
 library(jsonlite)
 
-uri <- "http://127.0.0.1:8000/c2cid/"
-compound <- c("aspirin", "arachidonic acid")
-compoud2cid <- postForm(uri = uri, .params = list(compound = compound)) |>
+uri <- "http://127.0.0.1:8000/protein2stringid/"
+protein <- c("PTCH1", "TP53", "BRCA1", "BRCA2")
+resp <- postForm(uri = uri, .params = list(protein = protein)) |>
   fromJSON()
+resp
+## $p2string
+##   protein       stringv12
+## 1    TP53 ENSP00000269305
+## 2   PTCH1 ENSP00000332353
+## 3   BRCA2 ENSP00000369497
+## 4   BRCA1 ENSP00000418960
 ```
 
 ## :sparkling_heart: Contributing
