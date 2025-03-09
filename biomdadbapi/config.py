@@ -4,7 +4,7 @@ from configparser import ConfigParser, NoOptionError, NoSectionError
 def add_config():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--database', dest='database', required=True,
-                        help='The path of MeDAM database')
+                        help='The path of BioMDA database')
     parser.add_argument('-o', '--host', dest='host', required=False,
                         help='The host of http://[host]:port, defualt 127.0.0.1',
                         default='127.0.0.1')
@@ -16,7 +16,7 @@ def add_config():
     host = args.host
     port = args.port
     if not os.path.exists(db):
-        print('The path of MeDAM database is not exist.')
+        print('The path of BioMDA database is not exist.')
         sys.exit()
     else:
         conf = ConfigParser()
@@ -42,8 +42,8 @@ def get_config():
         db = conf.get('defualt', 'database')
     except NoSectionError:
         print('******')
-        print('Execute medam-add-config to add options for defualt config.')
-        print('medam-add-config -h')
+        print('Execute biomdadb-add-config to add options for defualt config.')
+        print('biomdadb-add-config -h')
         print('******')
         sys.exit()
     except NoOptionError:
@@ -59,6 +59,6 @@ def show_config():
     with open(cfg_file, 'r') as f:
         print(f.read())
     print('******')
-    print('Execute medam-add-config to add options for defualt config.')
-    print('medam-add-config -h')
+    print('Execute biomdadb-add-config to add options for defualt config.')
+    print('biomdadb-add-config -h')
     print('******')

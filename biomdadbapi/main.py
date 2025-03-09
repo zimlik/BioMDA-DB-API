@@ -9,15 +9,15 @@ from .config import get_config
 app = FastAPI()
 
 @app.post('/c2cid/')
-async def medam_compound2cid(compound: list[str]=Form()):
-    res = await crud.sel_compound2cid(compound=compound)
+async def biomdadb_compound2cid(md5sum: list[str]=Form()):
+    res = await crud.sel_compound2cid(md5sum=md5sum)
     if (res is None):
         raise HTTPException(status_code=404)
     else:
         return res
 
 @app.post('/cid2ssimcid/')
-async def medam_cid2ssimcid(cid: list[str]=Form()):
+async def biomdadb_cid2ssimcid(cid: list[str]=Form()):
     res = await crud.sel_cid2ssimcid(cid=cid)
     if (res is None):
         raise HTTPException(status_code=404)
@@ -25,7 +25,7 @@ async def medam_cid2ssimcid(cid: list[str]=Form()):
         return res
 
 @app.post('/disease2doid/')
-async def medam_disease2doid(disease: str=Form(), fixed: bool=Form()):
+async def biomdadb_disease2doid(disease: str=Form(), fixed: bool=Form()):
     res = await crud.sel_disease2doid(disease=disease, fixed=fixed)
     if (res is None):
         raise HTTPException(status_code=404)
@@ -33,7 +33,7 @@ async def medam_disease2doid(disease: str=Form(), fixed: bool=Form()):
         return res
 
 @app.post('/doid2gene/')
-async def medam_doid2gene(doid: str=Form()):
+async def biomdadb_doid2gene(doid: str=Form()):
     res = await crud.sel_doid2gene(doid=doid)
     if (res is None):
         raise HTTPException(status_code=404)
@@ -41,7 +41,7 @@ async def medam_doid2gene(doid: str=Form()):
         return res
 
 @app.post('/protein2stringid/')
-async def medam_protein2stringid(protein: list[str]=Form()):
+async def biomdadb_protein2stringid(protein: list[str]=Form()):
     res = await crud.sel_protein2stringid(protein=protein)
     if (res is None):
         raise HTTPException(status_code=404)
@@ -49,7 +49,7 @@ async def medam_protein2stringid(protein: list[str]=Form()):
         return res
 
 @app.post('/stringppi/v12/')
-async def medam_string_ppi(stringid: list[str]=Form(), score: int=Form()):
+async def biomdadb_string_ppi(stringid: list[str]=Form(), score: int=Form()):
     res = await crud.sel_string_ppi(stringid=stringid, score=score)
     if (res is None):
         raise HTTPException(status_code=404)
@@ -57,7 +57,7 @@ async def medam_string_ppi(stringid: list[str]=Form(), score: int=Form()):
         return res
 
 @app.post('/exptcpi/v5/')
-async def medam_expt_cpi(stitchid: list[str]=Form(), score: int=Form()):
+async def biomdadb_expt_cpi(stitchid: list[str]=Form(), score: int=Form()):
     res = await crud.sel_expt_cpi(stitchid=stitchid, score=score)
     if (res is None):
         raise HTTPException(status_code=404)
@@ -65,7 +65,7 @@ async def medam_expt_cpi(stitchid: list[str]=Form(), score: int=Form()):
         return res
 
 @app.post('/stitchcpi/v5/')
-async def medam_stitch_cpi(stitchid: list[str]=Form(), score: int=Form()):
+async def biomdadb_stitch_cpi(stitchid: list[str]=Form(), score: int=Form()):
     res = await crud.sel_stitch_cpi(stitchid=stitchid, score=score)
     if (res is None):
         raise HTTPException(status_code=404)
@@ -77,4 +77,4 @@ def main():
     host = conf_opt.get('host')
     port = conf_opt.get('port')
     port = int(port)
-    uvicorn.run(app='medamapi.main:app', host=host, port=port)
+    uvicorn.run(app='biomdadbapi.main:app', host=host, port=port)

@@ -5,14 +5,11 @@ from sqlmodel import Session, select, and_, or_
 from .models import (Compound2cid, Cid2ssimcid, Disease2doid, Doid2gene,
                     Protein2stringid, PPIv12, Pnodev12, ExptCPI, ExptPnode,
                     CPIv5, CCIv5, PPIv10p5, Pnodev10p5, Cnodev5)
-from .utilities import string2md5, row_to_dict
+from .utilities import row_to_dict
 from .database import engine
 import re
 
-async def sel_compound2cid(compound: list[str]):
-    md5sum = [string2md5(x.strip()) for x in compound]
-    md5sum2compound = [{'md5sum': x, 'compound': y}
-               for x, y in zip(md5sum, compound)]
+async def sel_compound2cid(md5sum: list[str]):
     with Session(engine) as session:
         stmt = select(Compound2cid).where(Compound2cid.md5sum.in_(md5sum))
         md5sum2cid = session.exec(stmt).all()
@@ -20,7 +17,7 @@ async def sel_compound2cid(compound: list[str]):
         res = None
     else:
         md5sum2cid = row_to_dict(Compound2cid, md5sum2cid)
-        res = {'md5sum2cid': md5sum2cid, 'md5sum2compound': md5sum2compound}
+        res = {'md5sum2cid': md5sum2cid}
     return res
 
 async def sel_cid2ssimcid(cid: list[str]):
