@@ -28,7 +28,7 @@ Building APIs for BioMDA Database via FastAPI framwork.
 
 We welcome any contributions! By participating in this project you agree
 to abide by the terms outlined in the [Contributor Code of
-Conduct](https://github.com/zimlik/BioMDA-DB-API/CONDUCT.md).
+Conduct](https://github.com/zimlik/BioMDA-DB-API/blob/main/CONDUCT.md).
 
 ## Feedback
 """
