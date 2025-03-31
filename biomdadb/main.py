@@ -44,7 +44,7 @@ app = FastAPI(
             'url': 'https://github.com/zimlik/BioMDA-DB-API/issues',
     },
     license_info={'name': 'MIT',
-                  'url': 'https://github.com/zimlik/BioMDA-DB-API/LICENSE'}
+                  'url': 'https://github.com/zimlik/BioMDA-DB-API/blob/main/LICENSE'}
 )
 
 @app.get("/")
