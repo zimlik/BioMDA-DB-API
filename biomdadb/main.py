@@ -105,7 +105,7 @@ async def biomdadb_string_ppi(stringid: list[str]=Form(), score: int=Form()):
 
 @app.post('/targetcpi/v5/')
 async def biomdadb_expt_cpi(cid: list[str]=Form(), score: int=Form()):
-    res = await crud.sel_expt_cpi(cid=cid, score=score)
+    res = await crud.sel_tgtp_cpi(cid=cid, score=score)
     if (res is None):
         raise HTTPException(status_code=404)
     else:
