@@ -20,6 +20,20 @@ async def sel_compound2cid(md5sum: list[str]):
         res = {'md5sum2cid': md5sum2cid}
     return res
 
+async def sel_cid2info(cid: list[str]):
+    with Session(engine) as session:
+        stmt = select(Cnode).where(Cnode.id.in_(cid))
+        cnodes = session.exec(stmt).all()
+    cnodes = row_to_dict(Cnode, cnodes)
+    return {'cnodes': cnodes}
+
+async def sel_stringid2info(stringid: list[str]):
+    with Session(engine) as session:
+        stmt = select(Pnode).where(Pnode.id.in_(stringid))
+        pnodes = session.exec(stmt).all()
+    pnodes = row_to_dict(Pnode, pnodes)
+    return {'pnodes': pnodes}
+
 async def sel_cid2ssimcid(cid: list[str]):
     with Session(engine) as session:
         stmt = select(Cid2ssimcid).where(Cid2ssimcid.cid.in_(cid))
@@ -28,7 +42,14 @@ async def sel_cid2ssimcid(cid: list[str]):
         res = None
     else:
         cid2ssimcid = row_to_dict(Cid2ssimcid, cid2ssimcid)
-        res = {'cid2ssimcid': cid2ssimcid}
+        ssimcid = [row['ssimcid'].split(',') for row in cid2ssimcid]
+        ssimcid = [item for item_list in ssimcid for item in item_list]
+        ssimcid = list(set(ssimcid))
+        with Session(engine) as session:
+            stmt2 = select(Cnode).where(Cnode.id.in_(ssimcid))
+            cnodes = session.exec(stmt2).all()
+        cnodes = row_to_dict(Cnode, cnodes)
+        res = {'cid2ssimcid': cid2ssimcid, 'cnodes': cnodes}
     return res
 
 async def sel_disease2doid(disease: str, fixed: bool):
@@ -76,7 +97,13 @@ async def sel_protein2stringid(protein: list[str]):
         res = None
     else:
         p2string = row_to_dict(Protein2stringid, p2string)
-        res = {'p2string': p2string}
+        stringid = [row['id'] for row in p2string]
+        stringid = list(set(stringid))
+        with Session(engine) as session:
+            stmt2 = select(Pnode).where(Pnode.id.in_(stringid))
+            pnodes = session.exec(stmt2).all()
+        pnodes = row_to_dict(Pnode, pnodes)
+        res = {'p2string': p2string, 'pnodes': pnodes}
     return res
 
 async def sel_string_ppi(stringid: list[str], score: int):
@@ -172,9 +199,11 @@ async def sel_stitch_cpi(cid: list[str], score: int):
         with Session(engine) as session:
             stmt4 = select(Cnode).where(Cnode.id.in_(scid))
             cnodes = session.exec(stmt4).all()
+        cnodes = row_to_dict(Cnode, cnodes)
         with Session(engine) as session:
             stmt5 = select(Pnode).where(Pnode.id.in_(spid))
             pnodes = session.exec(stmt5).all()
+        pnodes = row_to_dict(Pnode, pnodes)
         nodes = {'cnodes': cnodes, 'pnodes': pnodes}
         res = {'edges': edges, 'nodes': nodes}
     return res

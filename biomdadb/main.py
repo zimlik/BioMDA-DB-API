@@ -63,6 +63,23 @@ async def biomdadb_compound2cid(md5sum: list[str]=Form()):
     else:
         return res
 
+@app.post('/cid2info/')
+async def biomdadb_cid2info(cid: list[str]=Form()):
+    res = await crud.sel_cid2info(cid=cid)
+    if (res is None):
+        raise HTTPException(status_code=404)
+    else:
+        return res
+
+
+@app.post('/stringid2info/')
+async def biomdadb_stringid2info(stringid: list[str]=Form()):
+    res = await crud.sel_stringid2info(stringid=stringid)
+    if (res is None):
+        raise HTTPException(status_code=404)
+    else:
+        return res
+
 @app.post('/cid2ssimcid/')
 async def biomdadb_cid2ssimcid(cid: list[str]=Form()):
     res = await crud.sel_cid2ssimcid(cid=cid)
